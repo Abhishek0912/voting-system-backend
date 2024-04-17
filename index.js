@@ -4,7 +4,6 @@ const cors = require('cors');
 const http = require('http')
 const { Server } = require("socket.io");
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
 const session = require('express-session')
 
 require('dotenv').config();
@@ -55,7 +54,6 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-   // if (await bcrypt.compare(password, user.password)) {
     if(password==user.password){
       return res.status(200).json({ success: true, message: 'User LoggedIn Successfully' });
     } else {
@@ -68,21 +66,18 @@ app.post('/login', async (req, res) => {
 });
 
 // initializes the DB with the default table and nominees
-//app.get('/seeder', async (req, res) => {
 async function seeder(){
   try{
 
     await services.seeder();
 
-    //res.status(200).json({ success: true, message: 'Success running seeder' });
-
   }catch(error){
     console.error('Error running seeder:', error);
-   // res.status(500).json({ success: false, message: 'Error running seeder' });
   }
 }
-//})
+
 seeder();
+
 //get all nominess
 app.get('/nominees', async (req, res) => {
   try {
@@ -134,6 +129,7 @@ app.post('/vote/:nomineeId', async (req, res) => {
     }
  });
 
+ //get Votes 
 app.get('/votes', async (req, res) => {
     try {
 
@@ -150,11 +146,13 @@ app.get('/votes', async (req, res) => {
     }
 });
 
+// Chk If user have already Voted
 app.get('/voted', async (req, res) => {
   return res.json({
     "value": req.session.voted ?? false
   })
 })
+
 
 io.on('connection',  (socket) => {
   console.log('A client connected');

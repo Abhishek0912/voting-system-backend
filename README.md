@@ -1,4 +1,4 @@
-## voting-system-frontend
+## voting-system-backend
 
 This project is a Node.js Backend application designed to Voting System.
 
